@@ -27,7 +27,7 @@ ccc.chineseCharCount("台灣科技業有一個惡習，「資深工程師未來�
 	console.log(res);
 });
 
-// should be 143 words
+// should be 143 chars
 ccc.chineseCharCount("例如，電人電腦搭載微軟作業系統，這是屬於一種軟體授權模式的研發，但是Android手機本質上是一種開放源碼的研發模式。所以，用開發微軟產品的軟體模式，去做Android的產品。結果如何，這需要一點運氣。這通常是第一波出局者。從2009到2011年這三年間，從Android生態系統出局的廠商，幾乎都是屬於這個類型。這些類型的廠商，幾乎因為有過去的一些包袱，觀念一時難以轉變者。", function (res) {
 	console.log(res);
 });

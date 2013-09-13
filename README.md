@@ -1,5 +1,5 @@
-nodejs-cccount
-==============
+cccount
+=======
 
 A nodejs module for calculating Chinese characters.
 

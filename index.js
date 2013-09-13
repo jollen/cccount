@@ -33,7 +33,7 @@ exports.chineseCharCount = function(src, cb) {
 	// strip
 	unicodeEnglish = unicodeContentNoChinese.replace(/%\w{2}/gi, '');
 
-	// calculator Chinese characters
+	// calculate Chinese characters
 	// '我' is one characters, which says 'I'
 	// '我是' is two characters, which says 'I am'
 	// '我是學生' is four characters, which says 'I am a student'
