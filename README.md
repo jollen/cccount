@@ -1,7 +1,7 @@
 nodejs-cccount
 ==============
 
-A nodejs module for calculating Chinese character counts
+A nodejs module for calculating Chinese characters.
 
 # Install
 
@@ -29,7 +29,7 @@ var ccc = require('cccount');
 
 ## cccount.chineseCharCount(data, function (res) {})
 
-The callback will be executed once the data has been calculated. The callback will be passwd a JSON object, the *res*:
+The callback will be executed once the data has been calculated. The callback will be passed a JSON object, the *res*:
 
 ```
 { lengthChinese: 313 }
