@@ -14,7 +14,7 @@ exports.chineseCharCount = function(src, cb) {
 	// this is the often used symbols in all Chinese articles
 	chineseSymbolTable = '，︳〉、╴︿。︴﹀．﹏「‧（」；）﹁：︵﹂？︶『！｛』︰｝﹃…︷﹄‥︸﹙﹐〔﹚﹑〕﹛﹒︹﹜·︺﹝﹔【﹞﹕】‘﹖︻’﹗︼“｜《”-》〝︱︽〞—︾‵〈′';
 
-	// filter the content in progress: strap spaces
+	// filter the content in progress: strip all spaces
 	contentFiltered = src.replace(/\s/g, '');
 
 	// filter the content in progress: 
@@ -27,10 +27,10 @@ exports.chineseCharCount = function(src, cb) {
 	// prepare a new copy to start counting
 	unicodeContent = escape(contentFiltered);
 
-	// strap
+	// strip
 	unicodeContentNoChinese = unicodeContent.replace(/%u\w{4}/gi, '');
 
-	// strap
+	// strip
 	unicodeEnglish = unicodeContentNoChinese.replace(/%\w{2}/gi, '');
 
 	// calculator Chinese characters
