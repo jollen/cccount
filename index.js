@@ -19,7 +19,7 @@ exports.chineseCharCount = function(src, cb) {
 
 	// filter the content in progress: 
 	// 		open RegExp instances to strip all Chinese symbols
-	for(i = 0; i < chineseSymbolTable.length; i++) {
+	for(var i = 0; i < chineseSymbolTable.length; i++) {
 		var regex = new RegExp(chineseSymbolTable.substr(i, 1), "ig");
 		contentFiltered = contentFiltered.replace(regex, '');
 	}
