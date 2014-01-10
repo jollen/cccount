@@ -9,7 +9,7 @@
   "keywords": [
   ],
   "main": "./index.js",
-  "version": "0.1.1",
+  "version": "0.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/jollen/nodejs-cccount.git"

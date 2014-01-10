@@ -1,0 +1,449 @@
+# 第5章：Operator 與 Expression
+
+PHP 的 expressions (表示式) 與 C 語言非常類似，事實上前面的章節已經用到很多的 expressions 了，本節列出 PHP 裡可用來表示 expressions 的運算子 (Operator)。
+
+Expression & Operator 是什麼呢？舉個例子來說明：
+
+~~~~~~~~
+$n=$a+$b
+~~~~~~~~
+
+$a+$b 整個式子稱為一個 expression，而 + 即為 operator (運算子)。「+」稱為 Assignment Operator，$n=$a+$b 就是一個 assign 的動作。
+
+## 數學運算子 (Arithmetic Operators)
+
+表 2.2 PHP 的數學運算子
+運算子		範例		用途
++			$a+$b		加法
+-			$a-$b		減法
+*			$a*$b		乘法
+/			$a/$b		除法
+%			$a%$b		取 $a/$b 的餘數
+++			$a++		$a = $a+1
+--			$a--		$a = $a-1
+
+其中的 ++ 與 -- 為單元運算子 (unary operator)，PHP/FI 2 並不支援這種寫法。這 2 個單元運算子和 C 語言一樣，有前置與後置的寫法：
+
+~~~~~~~~
+$a = $b++; //第一種寫法
+$a = ++$b; //第二種寫法
+~~~~~~~~
+
+如果 $b 為 5，則第 1 種寫法產生的結果為：
+
+~~~~~~~~
+$a = 5
+$b = 6
+~~~~~~~~
+
+第 2 種寫法產生的結果為：
+
+~~~~~~~~
+$a = 6
+$b = 6
+~~~~~~~~
+
+範例：
+
+~~~~~~~~
+<?php
+
+$x = 0;
+
+for ($i = 0; $i < 10; $i++) {
+   echo $x++. " ";
+}
+
+for ($i = 0; $i < 10; $i++) {
+   echo --$x. " ";
+}
+
+?>
+~~~~~~~~
+
+輸出結果：
+
+~~~~~~~~
+0 1 2 3 4 5 6 7 8 9 9 8 7 6 5 4 3 2 1 0
+~~~~~~~~
+
+## 位元運算子 (Bitwise Operators)
+
+表 2-3 PHP 的位元運算子
+運算子		範例		用途
+&			$a&$b		做 $a AND $b 的運算
+|			$a|$b		做 $a OR $b 的運算
+~			~$a		將 $a 的位元 (bit) 反相，~ 是一個單元運算子
+^			$a^$b		做 $a XOR $b 的運算
+>>			$a>>$b		將 $a 向右旋轉 $b 個位元	
+<<			$a<<$b		將 $a 向左旋轉 $b 個位元
+
+要注意的是，向右旋輚後的值仍保有原先的性質符號，例如：
+
+~~~~~~~~
+-1 >> 2
+~~~~~~~~
+
+-1 向右旋轉 2 個位元後結果仍為 -1，又如：
+
+~~~~~~~~
+1 >> 2
+~~~~~~~~
+
+1 向右旋轉 2 個位元後，結果為 0。
+
+範例：
+
+~~~~~~~~
+<?php
+
+$x = 5;
+echo $x << 1;
+
+?>
+~~~~~~~~
+
+輸出結果：
+
+~~~~~~~~
+10
+~~~~~~~~
+
+將數值往左移 1 位元的效果如同將數值乖上 2。
+
+## 邏輯運算子 (Logical Operators)
+
+表 2-4  PHP 的邏輯運算子
+運算子		範例			用途
+and			$a and $b		$a 與 $b 同為 true 時結果為 true
+or			$a or $b		$a 或 $b 為 true 時結果為 true
+xor			$a xor $b		$a 或 $b 為 true，但兩者不同時為 true 時結果為 true
+!			!$a			$a 不為 true 時結果為 true
+&&			$a && $b		同 and
+||			$a || $b		同 or
+
+邏輯運算子利用真值表來觀察會比較清楚：
+
+1. AND
+
+and		0		1
+0		0		0
+1		0		1
+
+
+2. OR
+
+or		0		1
+0		0		1
+1		1		1
+
+3. XOR
+xor		0		1
+0		0		1
+1		1		0
+
+4. ! (NOT)
+
+not 	
+0		1
+1		0
+
+其中 ! 為單元運算子，即只要有 1 個運算元 (operand) 即可做運算。
+
+範例：
+
+~~~~~~~~
+<?php
+
+$x = 5;
+$y = 10;
+$z = null;
+
+if ($x > 0 && $y > 0) {
+   $z = $x * $y;
+}
+
+echo "Z = $z";
+
+?>
+~~~~~~~~
+
+輸出結果：
+
+~~~~~~~~
+Z = 50
+~~~~~~~~
+
+## 判斷運算子 (Condition Operators)
+
+判斷運算子還可細分成 2 種：Comparison Operators 與 Condition Operators。
+
+表 2-5 PHP 的判斷運算子
+運算子		範例		用途
+Comparison Operators
+==			$a==$b		判斷 $a 是否等於 $b
+!=			$a!=$b		判斷 $a 是否不等於 $b
+<>			$a<>$b		判斷 $a 是否不等於 $b
+Condition Operators 
+<			$a<$b		判斷 $a 是否小於 $b
+>			$a>$b		判斷 $a 是否大於 $b
+<=			$a<=$b		判斷 $a 是否小於等於 $b
+>=			$a>=$b		判斷 $a 是否大於等於 $b
+
+判斷運算子依結果傳回 true 或 false (真或假)。
+
+範例：
+
+~~~~~~~~
+<?php
+
+if ("abcd" > "abcdefg") {
+   echo "abcd > abcdefg<br>";
+} else {
+   echo "abcd < abcdefg<br>";
+}
+
+?>
+~~~~~~~~
+
+輸出結果：
+
+~~~~~~~~
+abcd < abcdefg
+~~~~~~~~
+
+## 字串運算子 (String Operators)
+
+"." 用在字串上，表示字串連接運算子 (string concatenation operator)，例如：
+
+~~~~~~~~
+$a = "Hi! ";
+$b = $a . "Dears.";
+~~~~~~~~
+
+此時 $b 為 "Hi! Dears."，句號用來連接兩個字串的資料型態。
+
+當 string concatenation operator 用在數值型態上時，數值型態會被自動轉型成字串。
+
+範例：
+
+~~~~~~~~
+<?php
+
+$age = 20;
+$str = "Martin is " . $age . " years old.";
+echo $str;
+
+?>
+~~~~~~~~
+
+輸出結果：
+
+~~~~~~~~
+Martin is 20 years old.
+~~~~~~~~
+
+連接運算子為唯一的字串運算子。
+
+## 指定運算子 (Assignment Operators)
+
+"=" 在程式語言裡稱為**指定運算子**，並不叫做等於，舉個例子：
+
+~~~~~~~~
+$a = $a+3;
+~~~~~~~~
+
+如果 "=" 為數學上的等於之意，這個式子 $a 等於 $a 加 3 就是錯誤的邏輯，所以應想做「$a+3 的值指定給 $a」，"=" 運算子的運用場合非常多，還可以配合其它運算子的組合，例如：
+
+~~~~~~~~
+$a = ($a+$b) & ($a-$b);
+$b = "OK? ";
+$c = $c . "OK!";	// 此時 $c 為 "OK? OK!"
+~~~~~~~~
+
+指定運算子是由右而左做指定的工作，並考慮 expression 裡的優先序與括弧，例如：
+
+~~~~~~~~
+$a = 5;
+$b = 5;
+~~~~~~~~
+
+可寫成：
+
+~~~~~~~~
+$a = $b = 5;
+~~~~~~~~
+
+先指定 5 給 $b，再把 $b 的值指定給 $a。又如：
+
+~~~~~~~~
+$a = ($b = 5) - 1;
+~~~~~~~~
+
+先指定 5 給 $b，最後的結果：
+
+~~~~~~~~
+$b = 5
+$a = 4
+~~~~~~~~
+
+另外，$a = $a+b 的指定運算式可簡寫為 $a += $b，其它類似用法的共有：
+
+標準寫法		簡寫式
+$a = $a+$b		$a += $b
+$a = $a-$b		$a -= $b
+$a = $a*$b		$a *= $b
+$a = $a/$b		$a /= $b
+$a = $a%$b		$a %= $b
+$a = $a.$b		$a .= $b
+$a = $a&$b		$a &= $b
+$a = $a|$b		$a |= $b
+$a = $a^$b		$a ^= $b
+$a = $a<<$b		$a <<= $b
+$a = $a>>$b		$a >>= $b
+
+## Ternary Operator
+
+Ternary Operator 的語法為：
+
+~~~~~~~~
+CONDITION-PART ? TRUE-PART : FALSE-PART
+~~~~~~~~
+
+亦即：
+
+~~~~~~~~
+if (CONDITION-PART) {
+	TRUE-PART;
+} else {
+	FALSE-PART;
+}
+~~~~~~~~
+
+例如：
+
+~~~~~~~~
+$level = ($grade < 60) ? "不及格" : "及格";
+~~~~~~~~
+
+上面的寫法等於：
+
+~~~~~~~~
+if ($grade < 60) {
+	$level = "不及格";
+} else {
+	$level = "及格";
+}
+~~~~~~~~
+
+## 單元運算子 (Unary Operators)
+
+單元運算子指的是可以只有一個運算元的運算子，在之前我們都已看過，這裡整理出 PHP 所有的單元運算子。
+
+單元運算子		說明
++op1			將 op1 加上正號 (變成正數)
+-op1			將 op1 加上負號 (變成負數)
+!op1			NOT op1
+~op1			將 op1 所有位元 (bit) 反相
+++op1			事先 (pre) 將 op1 加一
+--op1			事先 (pre) 將 op1 減上
+op1++			事後再將 op1 加一
+op1--			事後再將 op1 減一
+
+其中 ++ 與 -- 運算子是比較值得注意的，這點我們已經講解過。
+
+## 優先序
+
+PHP 裡的運算子也有其優先序，優先序在整個 expression 裡佔用極重要的地方，底下是 PHP 所有運算子的優先序等級，等級越高 (優先等級值大者) 表示越優先處理。
+
+優先等級	運算子			運算方向
+15			=>				Left to right
+14			->				Left to right 
+13			? :				Left to right 
+12			<, <=, >, >=	None
+11			==, !=, <>		None
+10			+, -, !, ~		Right to left
+09			++, --			Left to right
+08			<<, >>			Left to right 
+07			/, *, %			Left to right 
+06			+, -			Left to right 
+05			&, .			Left to right 
+04			|, ^			Left to right 
+03			||, &&			Left to right 
+02			 =, +=, -=		Left to right 
+			*=, /=, .=
+			%=, &=, |=
+			^=, <<=, >>=
+01			or, and, xor	Left to right 
+
+## PHP 的 Expressions
+
+簡而言之，expression 就是「表示一個值」的方法，例如：
+
+~~~~~~~~
+$a = 3+5;
+$a = sin(3.14);
+~~~~~~~~
+
+我們可認定一個 expression 所表示的值是唯一的，但 expression 則不只一個。筆者之所以將 expression 放到這裡才討論，是因為我們早就很習慣，而且也很自然地使用 expression 有一段時間了，甚致在其它程式語言裡也是，只不過我們一直沒有替這種東西 (expression) 做有嚴謹的討論與定義。
+
+就學理而言，可以將 PHP 的 expression 分成 3 類：
+
+- Simple Expressions
+- Simple Expressions with Side Effects
+- Complex Expressions
+
+接下來要簡單介紹這 3 種 expression。
+
+## Simple Expressions
+
+simple expression 指的是只有一個 assignment 或是只有一個函數的 expression，例如：
+
+~~~~~~~~
+init_arrays();
+$myName = "Jollen";
+$arr_names = array("Jollen", "Paul");
+~~~~~~~~
+
+## Simple Expressions with Side Effects
+
+side effect 指的是，在我們預期的 expression 結果中，有一些會產生其它結果的情形，例如 expression 中包括單元運算子就常有這種情況發生，例如當 $b = 5 時：
+
+~~~~~~~~
+$a = $b++;			// $a = 5, $b = 6
+$a = 1+($b++);		// $a = 6, $b = 6
+$a = 1+(++$b);		// $a = 7, $b = 6
+~~~~~~~~
+
+當指定 $a 的值時，$b 的值也會發生 side effect。
+
+又如，當改變全域變數時：
+
+~~~~~~~~
+function add() 
+{
+   global $num;
+   $num = $num*2;
+}
+~~~~~~~~
+
+## Complex Expressions
+
+除了 simple expression 之外，就是 complex expression 了，這類的 expression 常夾雜了許多變數、運算子與函數，例如：
+
+~~~~~~~~
+<?php
+
+function add($x, $y)
+{
+   return $x+$y;
+}
+
+// complex expression 範例
+echo (2 - pow(2,3)) / 3 - sin(3.14). "<br>";
+
+// complex expression 範例
+echo add(45-2*6-count("abc"), 6/2-5+count("XYZ")*2);
+
+?>
+~~~~~~~~

@@ -1,0 +1,191 @@
+# 第3章：數值與字串的寫法
+
+本節要介紹 PHP 數字與字串的寫法，其實這類的數值我們已經偷偷使用很久了，例如：
+
+- 數字：例如 123、3.14、-10
+- 字串：例如 "Jh Jollen"、"What's going on?"
+
+本章要討論的是數值寫法之間的各種差異。
+
+## 數字的寫法
+
+數字分為十進位、八進位與十六進位 3 種寫法：
+
+- 1234 - 一般我們習慣的十進位
+- 01234 - 開頭為 0 (zero) 表示這是一個八進位數字
+- 0x1234 - 開頭為 0x (zero eks) 表示這是一個十六進位數字
+
+另外，double (浮點數) 的寫法也是和平常的習慣一樣，例如：
+
+~~~~~~~~
+-12.3  3.5  7.0001   0.0000054   10000.1
+~~~~~~~~
+
+這 5 個數字都是浮點數正確的寫法。
+
+PHP 也支援科學記號寫法，可用來表示較大或較小的數值，例如：
+
+~~~~~~~~
+12.5E-5 (12.5x10-5)
+1.3E+3 (1.3x10+3)
+~~~~~~~~
+
+分別為 .000125 (0.000125) 與 1300。
+
+## 字串的寫法
+
+字串的寫法與數字不同，必須以一對單、雙或倒引號圍住，再加上特殊的跳脫字元，就是這一節所要介紹的內容。
+
+字串以單、雙或倒引號圍住分別有不同的義意，請看底下的例子。
+
+1. 單引號
+
+~~~~~~~~
+'An apple a day keeps the docter away.'
+~~~~~~~~
+
+當字串出現 ' 符號時，必須加上 \ 斜線：
+
+~~~~~~~~
+'I'm Jollen' 應改成 'I\'m Jollen' 才對，其中 \' 即稱為跳脫字元 (escape character)。
+~~~~~~~~
+
+2. 雙引號
+
+以雙引號圍住的字串 PHP 會對該字串做 variable interpolation 的動作，亦即做變數的最代，例如：
+
+~~~~~~~~
+$name = "Jollen";
+echo 'Name: $name';
+echo "Name: $name";
+~~~~~~~~
+
+執行結果為：
+
+~~~~~~~~
+Name: $name
+Name: Jollen
+~~~~~~~~
+
+在雙引號裡的字串如果有 $ (dollar sign)，只要改成跳脫字元的寫法即可：
+
+~~~~~~~~
+$total = 12000
+echo "Total: \$ $total";	//輸出 Total: $ 12000
+~~~~~~~~
+
+在做 variable interpolation 時，變數名稱是以一個以上空格做為界線，例如：
+
+~~~~~~~~
+<?php
+$n_file = 5;
+
+if ($n_file == 1) {
+	echo "There are $n_file.";
+} else {
+	echo "There are $n_files.";
+}
+?>
+~~~~~~~~
+
+當 $n_file 不為 1 時，"There are $n_files." PHP 所看到的變數為 $n_files，而不是正確的 $n_file，所以必須改成：
+
+~~~~~~~~
+<?php
+$n_file = 5;
+
+if ($n_file == 1) {
+	echo "There are $n_file.";
+} else {
+	echo "There are {$n_file}s.";
+}
+?>
+~~~~~~~~
+
+還有另外一個重點就是，單引號內的雙引號，或是雙引號內的單引號都視為有效字元，不需使用跳脫字元，例如：
+
+~~~~~~~~
+echo "I'm a happy bird.";
+echo 'I\'m a happy "bird"!';
+~~~~~~~~
+
+輸出結果為：
+
+~~~~~~~~
+I'm a happy bird.
+I'm a happy "bird"!
+~~~~~~~~
+
+表 3.1：PHP 的跳脫字元
+跳脫字元				用途
+\n						換行
+\r						Carriage return (游標回頭)
+\t						Tab
+\$						Dollar sign
+\"						符號："
+\\[0-7]{1,3} 			八進位數值 (符合該 regular expressin 者)
+\x[0-9A-Fa-f]{1,2}		十六進位數值 (符合該 regular expressin 者)
+\\						符號：\
+
+3. 反引號
+
+利用反引號可以執行 UNIX 下的命令，並傳回執行結果。例如：
+
+~~~~~~~~
+echo `ls -l *.txt`;
+~~~~~~~~
+
+表示將 ls -l *.txt 命令的執行結果輸出，以反引號圍住的字串為要執行的 UNIX 指令。
+
+請看底下範例：
+
+~~~~~~~~
+<html>
+<head>
+<title>反引號範例</title>
+</head>
+
+<body>
+<pre>
+<?php
+   $files = `ls -l`;
+   echo ereg_replace("\n", "<br>\n", $files); //處理成 HTML 的換行
+?>
+</pre>
+</body>
+</html>
+~~~~~~~~
+
+輸出結果：
+
+![圖3.1：反引號範例](2-3.bmp)
+
+## here doc syntax
+
+"<<<" 稱為 here doc syntax，PHP 4/5 才有提供這個語法，用來定義「一堆」字串給變數時特別好用，例如：
+
+~~~~~~~~
+<?php
+$str = <<<EOD
+I saw a dog yesterday.
+It's very fat.
+Too fat to walk.
+I tried to help it.
+But in vain.
+Because it weights 100 KG.
+EOD;
+?>
+~~~~~~~~
+
+$str 字串的值即為：
+
+~~~~~~~~
+I saw a dog yesterday.
+It's very fat.
+Too fat to walk.
+I tried to help it.
+But in vain.
+Because it weight 100 KG.
+~~~~~~~~
+
+EOD 為字串的開始與結果，可自定，要注意的是，<<<EOD 之後必須換行才能給定字串，即 EOD; 必須是獨立於一行，而且要記得加上分號。

@@ -1,0 +1,755 @@
+# 第2章：PHP 語法結構
+
+本節在介紹 PHP 的 if、switch、for、foreach、while、do、break 與 continue 敘述語法，在這一節裡，筆者會介紹這幾個語法的用途與基本觀念。
+
+我們可以視 PHP 程式碼為一些有效的敘述 (valid statements) 所構成的集合，理論上我們可以將 PHP 的敘述分成6 類：
+
+- No-action
+
+被 PHP 計算，但不發生任何動作的敘述，例如：1+2。
+
+- Action
+
+expression 所發生動作，例如：$a=1+2。
+
+- Assignment
+
+指定值給一個變數，例如：$a="Hello!"。
+
+- Decision
+
+if 與 switch 用來做條件判斷的敘述。
+
+- Loop
+
+for、while 與 do，可以重覆執行一堆敘述。
+
+- Jump
+
+亦即 break 與 continue 兩個敘述，可對 Loop 敘述做控制。
+
+接下來將分別介紹 if、switch、for、while、do、break 與 continue 敘述。
+
+## if 敘述
+
+if 的 3 種寫法：
+
+1.
+
+~~~~~~~~
+if (EXPRESSION) statement;
+// 當 EXPRESSION 為 true 時，則執行 statement
+~~~~~~~~
+
+當 statement 只有一行敘述時，可以省略大括弧。
+
+2.
+
+~~~~~~~~
+if (EXPRESSION) {
+	statement1; // 當 EXPRESSION 為 true 時，則執行這裡的
+	statement2; // statements 敘述 (statement block)。
+	...
+}
+~~~~~~~~
+
+3.
+
+~~~~~~~~
+if (EXPRESSION) :
+	statement1;   // 當 EXPRESSION 為 true 時，則執行這裡的
+	statement2;   // statements 敘述 (statement block)。
+	...
+endif;
+~~~~~~~~
+
+第 3 種語法是 PHP 特有的冒號寫法。
+
+if 敘述的意義為，當 EXPRESSION 為 true 時，則執行 statement(s) 的敘述。
+
+if 敘述的範例：
+
+~~~~~~~~
+<?php
+$a = 50;
+$b = 10;
+if ($a > $b) {
+   echo "a is bigger than b";
+   echo $a;
+}
+?>
+~~~~~~~~
+
+對於只有一行的 statement，我們可以省略大括弧的使用。請看底下的例子：
+
+~~~~~~~~
+<?php
+
+if ($name == 'Jollen') 
+   echo "Hi! Jollen";
+
+?>
+~~~~~~~~
+
+當變數 $name 的值等於 Jollen 這個字串時，則顯示 Hi! Jollen 字串。
+
+## 搭配 else 敘述
+
+else 與 if 語法搭配使用：
+
+1.
+
+~~~~~~~~
+if (EXPRESSION) {
+	statement1;   // 當 EXPRESSION 為 true 時，則執行這裡的
+	statement2;   // statements 敘述 (statement block)。
+	...
+} else {
+	statement3;   // 當 EXPRESSION 不為 true 時，則執行這裡的敘述。
+	statement4;
+	...
+}
+~~~~~~~~
+
+2.
+
+~~~~~~~~
+if (EXPRESSION) :
+	statement1;   // 當 EXPRESSION 為 true 時，則執行這裡的
+	statement2;   // statements 敘述 (statement block)。
+	...
+else :
+	statement3;   // 當 EXPRESSION 不為 true 時，則執行這裡的敘述。
+	statement4;
+	...
+endif;
+~~~~~~~~
+
+加上 else 可以做「如果．．．則．．．否則．．．」的邏輯判斷，請看底下的範例：
+
+~~~~~~~~
+<?php
+if ($name == "Jollen") {
+   echo "Man!";
+else {
+   echo "Woman!";
+}
+?>
+~~~~~~~~
+
+到這裡筆者要等別強調一點初學者常犯的錯誤，$name == "Jollen" 這個判斷式用的「==」用白話解釋表示「是否等於」，是一個邏輯判斷 (condition) 的運算子。而「=」則是「等於」，是數學的 assignment。要特別注意。
+
+細心的讀者還可以發現，上面兩例「Jollen」字串的寫法不太一樣，一個是用雙引號，一個是用單引號：
+
+~~~~~~~~
+"Jollen"  <--雙引號
+'Jollen'   <--單引號
+~~~~~~~~
+
+兩者之間的不同是，雙引號裡的變數會被取代，而單引號不會。這點在後面會在做解釋。
+
+## elseif 敘述
+
+elseif 的語法也是和 if 配合使用，用來做多層次的邏輯判斷：
+
+1.
+
+~~~~~~~~
+if (EXPRESSION1) {
+	statement1;   // 當 EXPRESSION1 為 true 時，則執行這裡的敘述。
+	...
+} elseif (EXPRESSION2) {
+	statement1;   // 當 EXPRESSION2 為 true 時，則執行這裡的敘述。
+	...
+}
+[elseif ...]
+else {        // 當以上所有的 EXPRESSIONS 都不為 true 時，
+statement1; 	 // 則執行這裡的敘述。
+	...
+}
+~~~~~~~~
+
+2.
+
+~~~~~~~~
+if (EXPRESSION1) :
+	statement;
+	...
+elseif (EXPRESSION2) :
+	statement;
+	...
+[elseif ...]
+else :
+	statements;
+	...
+endif;
+~~~~~~~~
+
+第 2 種格式則是第一種格式的冒號寫法。請看底下的範例：
+
+~~~~~~~~
+<?php
+if ($name == "Jollen") {
+   echo "Hi! Jollen.";
+} elseif ($name == "Paul") {
+   echo "Hi! Paul.";
+} elseif ($name == "Yii") {
+   echo "Hi! Yii.";
+} else {
+   echo "Who are you?";
+}
+?>
+~~~~~~~~
+
+使用 elseif 做多個判斷時，如果判斷條件都不成立，那麼就會執行最後 else 裡的敘述。
+
+## while 敘述
+
+while 是一種迴圈的敘述，語法如下：
+
+1.
+
+~~~~~~~~
+while (EXPRESSION) {
+	statement1;   // 當 EXPRESSION 當 true 時，則執行這裡的敘述。
+	statement2;
+	...
+}
+~~~~~~~~
+
+2.
+
+~~~~~~~~
+while (expr) :
+	statements;
+	...
+endwhile;
+~~~~~~~~
+
+第 2 種格式則是第一種格式的冒號寫法。
+
+while 執行的過程為：先判斷 EXPRESSION，如果 EXPRESSION 為 true，則執行 while 裡的敘述。範例：
+
+~~~~~~~~
+<?php
+$a = 1;
+$sum = 0;
+while ($a <= 10) {
+   $sum = $sum+$a;
+   $a = $a+1;
+}
+?>
+~~~~~~~~
+
+最後 $sum 的值為 55，即 1+2+3+4+5+6+7+8+9+10 的結果。執行過程如下：
+
+![圖 2.1：](flowchart-02.bmp)
+
+## do...while 敘述
+
+do...while 敘述也是迴圈敘述，但是 do...while 與 while 不同的地方在於，do...while 一定會先執行 do 裡的敘述 1 次，但是 while 則不一定。因為 while 是先去判斷 EXPRESSION 是否成立，而 do...while 則是先執行 1 次後才去判斷 EXPRESSION。
+
+do...while 的語法：
+
+~~~~~~~~
+do {
+	statement1;
+	statement2;  // 先執行這裡的 statements 一次，然後再判斷
+              // EXPRESSION，
+	...			// 當 EXPRESSION 當 true 時，則繼續執行這裡的敘述。
+} while (expr);
+~~~~~~~~
+
+do...while 迴圈的最大特色是，do 裡面的程式碼會至少被執行 1 次。另外，do...while 述敘並沒有冒號的寫法。
+
+請看底下的範例：
+
+~~~~~~~~
+<?php
+$a = 1;
+$sum = 0;
+do {
+   $sum = $sum+$a;
+   $a = $a+1;
+} while ($a <= 10);;
+?>
+~~~~~~~~
+
+與 while 的範例結果相同，最後 $sum 的值一樣是 55。
+
+do...while 的執行流程如下：
+
+![圖2-2：](flowchart-03.bmp)
+
+那麼 while 與 do...while 不同的地方什麼場合比較明顯呢？請看底下的範例：
+
+~~~~~~~~
+<?php
+while ($a == true) {
+   echo "Hello!";
+   $a = false;
+}
+
+do {
+   echo "Hello!";
+   $a = false;
+} while ($a == true);
+?>
+~~~~~~~~
+
+這是 while 與 do...while 的程式片斷，這 2 段程式最大的不同在於：如果 $a 的初始值為 true，則 2 個程式片斷的輸出結果相同。但是如果 $a 的初始值為 false，則 while 不會有任何輸出，但是 do...while 則一定會被執行 1 次，因此會輸出 1 個 Hello! 的字串。
+
+當 $a = false：
+
+~~~~~~~~
+$a = false;
+while ($a == true) {
+   echo "Hello!";
+   $a = false;
+}	// (沒有輸出)
+
+$a = false;
+do {
+   echo "Hello!";
+   $a = false;
+} while ($a == true);	// 輸出：Hello!
+~~~~~~~~
+
+當 $a = true：	
+
+~~~~~~~~
+$a = true;
+while ($a == true) {
+   echo "Hello!";
+   $a = false;
+}	// 輸出：Hello!
+
+$a = true;
+do {
+   echo "Hello!";
+   $a = false;
+} while ($a == true); // 輸出：Hello!
+~~~~~~~~
+
+## for 敘述
+
+for 迴圈敘述是一種有條件式的迴圈語法，for 與 while 或 do...while 不同的地方在於，for 可以指定迴圈開始與結束的條作，因此可以限定迴圈的次數。
+
+for 迴圈敘述的語法：
+
+~~~~~~~~
+for (EXPRESSION1; EXPRESSION2; EXPRESSION3) {
+	statements;
+	...
+}
+~~~~~~~~
+
+其中 EXPRESSION1 為最始條件，EXPRESSION2 為終止條件，EXPRESSION3 為迴圈結束後所要執行的 statement。請看底下的範例：
+
+~~~~~~~~
+<?php
+for ($i = 0; $i <= 10 ; $i++) {
+   echo "$i<br>";
+}
+?>
+~~~~~~~~
+
+執行時，$i = 0 表示 $i 的初始值為 0；$i <= 10 表示當 $i <= 10 時，迴圈繼續執行；$i++ 表示每次執行一次迴圈裡的敘述後 $i 的值加 1。
+
+$i++ 的寫法等於 $i = $i+1。這裡有 1 個重要的觀念要說是：EXPRESSION3 是在迴圈結束後才被執行，例如：
+
+~~~~~~~~
+for ($i = 0; $i <= 10; $i++) {
+   ...
+}
+~~~~~~~~
+
+我們來看這個迴圈，當迴圈終止後，$i 的值為 11，而不是 10。這是因為 $i++ 的敘述是在迴圈裡的程式片斷執行完成後才被執行，然後再回到迴圈的開頭做 $i <= 10 的邏輯判斷，因為先遞增 1 後再進行條件判斷，所以 $i 最後跳出迴圈時的值為 11，而不是 10。
+
+請讀者思考一點：因為 EXPRESSION3 是在迴圈結束時執行，所以才能確定迴圈裡的程式能看到正確的 $i 值。
+
+另外，for 的 3 個參數也可以是空白的，例如：
+
+~~~~~~~~
+<?php
+for ($i = 0;;) {
+   if ($i > 10) break;
+   $i++;
+}
+?>
+~~~~~~~~
+
+另外 EXPRESSION3 不一定是變數的增減值運算式 (expression)，也有可能是其它 statement，配合多個 statement 使用時，只要以逗號 "," 分開即可。請看底下的範例：
+
+~~~~~~~~
+for ($i = 0; $i <= 10; $i++)
+   echo $i;
+~~~~~~~~
+
+利用 expr3 是在迴圈結束時執行的statement的觀念，可以將這段程式改寫成：
+
+~~~~~~~~
+for ($i = 0; $i <= 10; printf("%d ", $i), $i++); //輸出 0 1 2 3 4 5 6 7 8 9 10
+~~~~~~~~
+
+但是如果寫成底下這樣，輸出的結果是不同的：
+
+~~~~~~~~
+for ($i = 0; $i <= 10; $i++, printf("%d ", $i)); //輸出 1 2 3 4 5 6 7 8 9 10 11
+~~~~~~~~
+
+答案很明顯，因為 EXPRESSION3 裡的 statements 也是照順序依序執行。因此，假如我們想要讓上面的程式的輸出與之前的相同，就要將程式修改成：
+
+~~~~~~~~
+for ($i = 0; $i <= 10; $i, printf("%d ", $i++)); //輸出 0 1 2 3 4 5 6 7 8 9 10
+~~~~~~~~
+
+另外，在這裡順帶解釋一下 echo 與 printf() 不同之處在於，echo 是 PHP 的命令，而 printf() 則是 PHP 的函數。
+
+## foreach 敘述
+
+foreach 敘述是由 PHP 4 開始所新增的語法，foreach 可以很方便地用來索引陣列資料結構裡的元素。其語法如下：
+ 
+- foreach(array_expression as $value) statement
+- foreach(array_expression as $key => $value) statement
+
+第 1 種語法會對陣列 array_expression 做迴圈，並將目前所指元素的值放到 $value 變數裡，然後陣列裡的指標會跟著移到下一個元素的位置。
+
+第 2 種語法則是和第一種語法相同，差別再於這種語法還會將元素的 key 放到 $key 變數裡。
+
+使用 foreach 敘述時，PHP 會自動在迴圈一開始時將陣列的內部指標移到第一個元素的位置，因此不需要呼叫 reset() 函數。另外，foreach 在對陣列做迴圈時，會額外複制一份陣列再做迴圈的動作，這表示 foreach 敘述不會改變原來陣列內部指標的位置。
+
+底下是一個利用 while 迴圈索引陣列元素的寫法，這也是以往常用的寫法：
+
+~~~~~~~~
+<?php
+reset ($arr);
+while (list($key, $value) = each ($arr)) {
+    echo "Value: $value<br>\n";
+}
+?>
+~~~~~~~~
+
+將 while 敘述改用 foreach 後，新的寫法如下：
+
+~~~~~~~~
+<?php
+foreach ($arr as $value) {
+    echo "Value: $value<br>\n";
+}
+?>
+~~~~~~~~
+
+假如我們還想要列印出陣列的 key，則可以改用第 2 種語法如下：
+
+~~~~~~~~
+<?php
+foreach ($arr as $key => $value) {
+    echo "Array: $key, $value<br>\n";
+}
+?>
+~~~~~~~~
+
+對於二維以上陣列的處理方式，可以使用巢狀式的 foreach 寫法。請看底下的範例：
+
+~~~~~~~~
+<?php
+$arr[0][0] = "aaa";
+$arr[0][1] = "bbb";
+$arr[1][0] = "ccc";
+$arr[1][1] = "ddd”;
+
+foreach($arr as $v1) {
+    foreach ($v1 as $v2) {
+        echo "$v2 ";
+    }
+}
+?>
+~~~~~~~~
+
+## break 敘述
+
+break 指定用來跳出目前的迴圈，通常是用在利用 if 敘述判斷到某個符合的條件，而必須馬上跳出迴圈時才使用。要注意的是，break 只能跳出一層迴圈，而且 break 只能用在**迴圈**敘述裡。
+
+範例：
+
+~~~~~~~~
+<?php
+for ($i = 0; ;$i++) {
+   if ($i > 10) break;
+}
+?>
+~~~~~~~~
+
+在這個範例裡，for 敘述沒有中止條件。中止條件寫在迴圈的程式裡，利用 if 來判斷，當 $i > 10 時，則執行 break 跳出迴圈。
+
+![圖 2-3：](flowchart-04.bmp)
+
+## continue 敘述
+
+continue 與 break 是相對的指令。break 中斷目前執行的迴圈，continue 則是回到迴圈的開頭，執行「下一次」的迴圈。
+
+例如：
+
+~~~~~~~~
+<?php
+for ($i = 0; $i < 10; $i++) {
+   if ($i == 5) continue;
+   printf("%d", $i);
+}
+?>
+~~~~~~~~
+輸出結果為：
+
+~~~~~~~~
+12346789
+~~~~~~~~
+
+我們可以把 break 看到是跳出目前這層迴圈，把 continue 看到是跳到迴圈的最後。為什麼呢？
+
+當 if 判斷到 $i 等於 5 時，continue 指令會跳到迴圈的最後，記得在前面介紹 if敘述時講過，在迴圈的最後，$i++ 會先被執行一次，然後再判斷中止條件是否成立，也就是 $i < 10，如果成立，則繼續執行下一次的 for 工作。
+
+![圖 2-4：](flowchart-05.bmp)
+
+## switch 敘述
+
+switch 是很好用的多條件判斷敘述，跟 if...elseif...elseif... 結構相同。switch 語法為：
+
+1.
+
+~~~~~~~~
+switch (EXPRESSION) {
+	case 1: statement1; // 當 EXPRESSION 的值為 1 (integer) 時，則執行這裡
+		  statement2; // 的敘述…
+			...
+         break;
+    case 2: statement10; // 當 EXPRESSION 的值為 2 (integer) 時，則執行這裡
+		  statement20; //的敘述…
+		  …
+    default:        // 當 EXPRESSION 的值都未出現在以上的 case 時，
+                 // 則執行這裡的敘述。
+          statement1;
+          statement2;
+			   ...
+          break;
+}
+~~~~~~~~
+
+2.
+
+~~~~~~~~
+switch (EXPRESSION) :
+	case 1: statements;
+          break;
+	case 2: statements;
+          break;
+    default: statements;
+            break;
+endswitch;
+~~~~~~~~
+
+第 2 種格式為第一種格式的冒號寫法。
+
+請看底下的範例：
+
+~~~~~~~~
+<?php
+switch ($i) {
+   case 'A': $grade = 90;
+             break;
+   case 'b':
+   case 'B': $grade = 80;
+             break;
+   default: $grade = 60;
+            break;
+}
+?>
+~~~~~~~~
+
+這裡直接用一個表來觀察範例的執行結果：
+
+$i 的值	最後 $grade 的值
+A	90
+a	60
+B	80
+b	80
+
+switch 的用法簡單，唯一要注意的是 break 的使用。假如在該 case 敘述片斷裡的最後一行敘述後沒有加上 break 的話，程式就會繼續往下執行而不會跳出，所以會執行到其它 case 的敘述，但是這種特性也常被拿來當成小技巧使用，例如：
+
+~~~~~~~~
+<?php
+higher_a = higher_b = higher_c = FALSE;
+
+switch ($grade) {
+   case 'A': higher_a = TRUE;
+   case 'B': higher_b = TRUE;
+   case 'C': higher_c = TRUE;
+             break;
+}
+?>
+~~~~~~~~
+
+當 $grade 為 B 時，則由 higher_b = TRUE 敘述開始執行，因此結果為：
+
+~~~~~~~~
+higher_a = FALSE;
+higher_b = TRUE;
+higher_c = TRUE;
+~~~~~~~~
+
+如果 $grade = C，則最後結果變成：
+
+~~~~~~~~
+higher_a = FALSE;
+higher_b = FALSE;
+higher_c = TRUE;
+~~~~~~~~
+
+## PHP 的註解
+
+我們寫程式的時候，替程式加上註解是一種很好習慣，往後才能更容易維護程式。PHP 的註解有 2 種形式：
+
+- 到行尾的註解
+
+~~~~~~~~
+$a = 5;		// assign 5 to $a
+~~~~~~~~
+
+表示 // 之後到該行的結束均為註解
+
+- 註解區
+
+~~~~~~~~
+/*    
+   Variables &
+   Assignment
+*/
+$a = 5;        /* assign 5 to $a */
+$b = $a;       /* assign $a to $b */
+~~~~~~~~
+
+表示 /* 與 */ 之間均為註解。
+
+這裡舉一個完整的程式範例：
+
+~~~~~~~~
+<html>
+<head>
+<title>註解的範例</title>
+</head>
+
+<body>
+<p>
+<?php
+   $x = 5;
+   $y = 10.05;
+
+   //計算 $x+$y 的值
+   echo "Your answer: ". (float)($x+$y);
+?>
+</p>
+</body>
+</html>
+~~~~~~~~
+
+輸出結果為：
+
+~~~~~~~~
+Your answer: 15.05
+~~~~~~~~
+
+## REQUIRE
+
+PHP 的 require() 和 C 語言的 #include 具同樣的效果，將指定的檔案插到 require() 所在的位置，例如：
+
+~~~~~~~~
+require("input.php");
+~~~~~~~~
+
+我們可以將有關輸入的函數寫在 input.php 裡，在需要用到時再 require 進來，這麼做不但可以增加程式的可讀性也方便除錯。
+
+我們修改 example_2-47.php，將 PHP 程式的部份存到另外一個檔案裡，然後利用 REQUIRE 命令將程式碼引起來。
+
+將上述範例程式碼修改為：
+
+~~~~~~~~
+<html>
+<head>
+<title>註解的範例</title>
+</head>
+
+<body>
+<p>
+<?php
+require(“add.inc”);
+?>
+</p>
+</body>
+</html>
+~~~~~~~~
+
+接著將底下的程式存成 add.inc 檔案即可：
+
+~~~~~~~~
+<?php
+   $x = 5;
+   $y = 10.05;
+
+   //計算 $x+$y 的值
+   echo "Your answer: ". (float)($x+$y);
+?>
+~~~~~~~~
+
+執行上述範例時，PHP 會把 add.inc 引入，因此最後的執行結果則是和之前的程式一樣。
+
+## INCLUDE
+
+PHP 的 include() 功用和 require 一樣，不同的是，require() 不能用在判斷敘述或迴圈裡，但 include() 可以，例如：
+
+~~~~~~~~
+<?php
+$files = array('a.inc', 'b.inc', 'c.inc');
+for ($i = 0; $i < count($files); $i++) 
+   include($files[$i]);
+?>
+~~~~~~~~
+
+如果我們需要在 if、do、while 等判斷或是迴圈裡引入檔案的話，就必須使用 include 命令。require 只能單獨寫成一行。
+
+除此之外，require() 與 include() 對於錯誤處理的方法也不同。require() 遇到錯誤時會產生 fatal error 的錯誤訊息，而 include() 則是只會產生 warning 訊息。例如，當 require() 無法引入指定的檔案時，便會產生 fatal error 的錯誤，造成程式中斷。如果改用 include() 的話，則只只會產生 warning 的警告訊息，但程式依然會繼續往下執行。
+
+## REQUIRE_ONCE
+
+從 PHP 4 開始，新增了 require_once() 的用法，功能上，require() 與 require_once() 是一樣的，唯一的差別在於如果 require_once() 所指定的檔案已經被引入過了，那麼 require_once() 就不會再重覆做一次引入的動作。
+
+對於 require_once() 的使用時機，常見的有下列幾點：
+
+1. PHP 程式執行期間，會多次引入相同的檔案。
+2. 確保不會因為重覆引入相同的檔案，而產生函數重覆定義 (function redefinitons) 的錯誤。
+3. 確保不會因為重覆引入相同的檔案，而產生變數重覆給值 (value reassignments) 的錯誤。
+
+要使用 require_once() 必須安裝 PHP 4.0.1pl2 以上的版本。
+
+## INCLUDE_ONCE
+
+相對於 require_once()，PHP 4 也新增了 include_once() 的用法。功能上，include() 與 include_once() 是一樣的，唯一的差別在於如果 include_once() 所指定的檔案已經被引入過了，那麼 include_once() 就不會再重覆做一次引入的動作。
+
+對於 include_once() 的使用時機，常見的有下列幾點 (與 require_once() 相同)：
+
+1. PHP 程式執行期間，會多次引入相同的檔案。
+2. 確保不會因為重覆引入相同的檔案，而產生函數重覆定義 (function redefinitons) 的錯誤。
+3. 確保不會因為重覆引入相同的檔案，而產生變數重覆給值 (value reassignments) 的錯誤。
+
+要使用 include_once() 必須安裝 PHP 4.0.1pl2 以上的版本。
+
+## 定義常數
+
+我們可利用 define() 函數來定義常數，例如：
+
+~~~~~~~~
+<?php
+define("NAME", "jollen");
+?>
+~~~~~~~~
+
+表示定義 NAME 常數，其值為 jollen。注意常數與變數一樣有大小寫之分。

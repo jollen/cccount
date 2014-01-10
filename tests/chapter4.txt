@@ -1,0 +1,518 @@
+# 第4章：Function 與 Class
+
+## function - 函數的定義
+
+在 PHP 裡定義函數的語法是利用 function 關鍵字，底下是一個簡單的例子：
+
+~~~~~~~~
+<?php
+function add($x, $y) {
+   return $x+$y;
+}
+?>
+~~~~~~~~
+
+這個範例宣告一個名為 add 的函數，並且有兩個傳入值與一個傳回值。要注意的是，因為 PHP 是直譯式 (Interrupt) 語言，所以函數必須在第一次被呼叫之前宣告，否則會出錯。
+
+## 了解什麼是 call by reference
+
+在 PHP 裡如果要傳遞參考 (call by address) 的話，有 2 種做法：
+
+1. 呼叫函數時在變數前加上 &，例如：
+
+~~~~~~~~
+add(&$x, $y);
+~~~~~~~~
+
+此時 add() 的寫法沒有什麼不同：
+
+~~~~~~~~
+function add($x, $y) {
+   $x += $y;
+}
+~~~~~~~~
+
+2. 在函數的參數加上 &，例如：
+
+~~~~~~~~
+function add(&$x, $y) {
+   $x += $y;
+}
+~~~~~~~~
+
+呼叫時的寫法：
+
+~~~~~~~~
+add($x, $y);
+~~~~~~~~
+
+這裡有 3 個範例，注意每個範例最後輸出的 $x 與 $y 值：
+
+1.
+
+~~~~~~~~
+function add($x, $y) {
+   $x += $y;
+}
+
+$x = 1;
+$y = 2;
+add($x, $y);
+
+echo "x = " . $x . "<br>" . "y = " . $y; 
+~~~~~~~~
+
+輸出：
+
+~~~~~~~~
+x = 1
+y = 2
+~~~~~~~~
+
+2.
+
+~~~~~~~~
+function add($x, $y) {
+   $x += $y;
+}
+
+$x = 1;
+$y = 2;
+add(&$x, $y);
+echo "x = " . $x . "<br>" . "y = " . $y; 
+~~~~~~~~
+
+輸出：
+
+~~~~~~~~
+x = 3
+y = 2
+~~~~~~~~
+
+3.
+
+~~~~~~~~
+function add(&$x, $y) {
+   $x += $y;
+}
+
+$x = 1;
+$y = 2;
+add($x, $y);
+
+echo "x = " . $x . "<br>" . "y = " . $y;  
+~~~~~~~~
+
+輸出：
+
+~~~~~~~~
+x = 3
+y = 2
+~~~~~~~~
+
+那麼，可不可以函數與呼叫函數時都加 & 呢？在 PHP 裡是可以的，並不會出錯，例如：
+
+~~~~~~~~
+<?php
+function add(&$x, $y) {
+   $x += $y;
+}
+
+$x = 1;
+$y = 2;
+add(&$x, $y);
+
+echo "x = " . $x . "<br>" . "y = " . $y;
+?>
+~~~~~~~~
+
+最後的結果一樣是：
+
+~~~~~~~~
+x = 3
+y = 2
+~~~~~~~~
+
+## 自訂函數的參數預設值
+
+在設計函數時，為了避免呼叫函數時沒有傳入參數值，因此我們可以替函數的參數加上預設值，例如：
+
+~~~~~~~~
+<?php
+function add($x = 0, $y = 0) {
+   return $x+$y;
+}
+
+echo add();
+?>
+~~~~~~~~
+
+因為呼叫 add() 時沒有傳入值，因此最後的輸出結果為：
+
+~~~~~~~~
+0
+~~~~~~~~
+
+呼叫函數時，如果沒有加上傳入值，則使用預設值。重要的是，如果只為某些參數加上預設值，加上預設值的參數必須全部靠右：
+
+~~~~~~~~
+<?php
+function add($x, $y = 1, $z = 2) {
+   return $x+$y+$z;
+}
+
+echo add(5);
+?>
+~~~~~~~~
+
+結果：
+
+~~~~~~~~
+8
+~~~~~~~~
+
+底下都是錯誤的寫法：
+
+~~~~~~~~
+function add($x = 1, $y, $z = 2) {
+   return $x+$y+$z;
+}
+
+function add($x = 1, $y = 2, $z) {
+   return $x+$y+$z;
+}
+~~~~~~~~
+
+這是因為函數是由左而右存放傳入值的關係，錯誤的寫法會導致 PHP 認為傳入的參數不足的錯誤，例如：
+
+~~~~~~~~
+function add($x = 1, $y = 2, $z) {
+   return $x+$y+$z;
+}
+
+echo add(10);
+~~~~~~~~
+
+此時，$x = 10，不使用預設值，但因為沒有傳入值給 $z，所以會產生錯誤。
+
+## 可變長度的參數
+
+PHP 4 開始支援可變長度的參數用法 (Variable-length argument lists)，我們直接以一個範例來說明：
+
+~~~~~~~~
+<?php
+
+function foo() {
+   $numargs = func_num_args();
+   return $numargs;
+}
+
+$n = foo (10, 15, 20); //傳入 3 個參數
+echo $n; //輸出 3
+?>
+~~~~~~~~
+
+程式裡的 func_num_args() 函數傳回呼叫該函數時所傳入的參數個數，以範例中的 foo(10, 15, 20) 為例，傳入了 3 個參數給 foo() 函數，因此 $numargs 的值為 3。此時 function foo() 不需要加上參數列表 (parameter lists)。
+
+要取得傳入的參數，則是使用 func_get_arg() 函數。請看底下的範例：
+
+~~~~~~~~
+<?php
+function foo() {
+   $numargs = func_num_args();
+   if ($numargs > 2) {
+      echo "First: ". func_get_arg(0). "<br>\n";
+      echo "Second: ". func_get_arg(1). "<br>\n";
+      echo "Third: ". func_get_arg(2). "<br>\n";
+   }
+   return $numargs;
+}
+
+$n = foo (10, 15, 20); //傳入 3 個參數
+echo $n;
+?>
+~~~~~~~~
+
+執行後的輸出結果為：
+
+~~~~~~~~
+First: 10
+Second: 15
+Third: 20
+3
+~~~~~~~~
+
+要注意的是，參數的個數是由 0 算起，因此 func_get_arg(0) 會傳回第 1 個參數。如果指定給 func_get_arg() 的參數個數超過實際傳入的參數範圍，則 func_get_arg() 會傳回 FALSE。
+
+另外，還有一個 func_get_args() 函數會傳回參數的陣列，因此我們可以配合 foreach 敘述來取得參數的值。請看底下的範例：
+
+~~~~~~~~
+<?php
+function foo() {
+   foreach(func_get_args() as $value) {
+      echo "$value<br>\n";
+   }
+}
+foo (10, 15, 20); //傳入 3 個參數
+?>
+~~~~~~~~
+
+輸出結果如下：
+
+~~~~~~~~
+10
+15
+20
+~~~~~~~~
+
+## 如何自訂 class
+
+PHP 也提供我們定義 class (類別) 的機制，class 稱為類別，為資料與函數的集合，class 裡的資料與函數稱為 data member 與 member function。我們來看底下這一個簡單的 class 範例：
+
+~~~~~~~~
+<?php
+class Cart {
+	var $items; //data member
+	function add_item($article, $num) { //member function
+      $this->items[$article] += $num;
+   }
+
+   function del_item($article, $num) { //member function
+      if ($this->item[$article] > $num) {
+         $this->item[$article] -= $num;
+         return true;
+      } else {
+         return false;
+      }
+   }
+}
+?>
+~~~~~~~~
+
+這是一個購物車類別定義的簡單範例，類別名稱為 Cart，Cart 類別擁有二個 member function，分別是 add_item 與 del_item，在 class 裡的 function 我們稱他們為 member function，分別是 add_item 與 del_item，用來增減物品的購買數量。
+
+一個 class 我們可以把他想像成一個很大的資料類型，使用這樣的資料類型之前，必須做宣告的動作：
+
+~~~~~~~~
+$cart = new Cart;
+~~~~~~~~
+
+這樣表示我們產生了一個 Cart 類別的物件，叫做 $cart。在 Cart 類別裡有 2個 member function，$cart 物件如果要呼叫這些 member function，可以利用 「->」 運算子：
+
+~~~~~~~~
+$cart->add_item("PHP Reference", "5");
+~~~~~~~~
+
+呼叫 member function 時傳遞參數的方法和一般的 function 一樣。
+
+在這裡如果讀者不懂 class 相關的觀念，也不用特意去解讀上面這段程式碼的涵意。讀者只要懂得如何產生物件，並了解如何使用這些物件即可。
+
+本書許多範例都用到了物件，但是不會有需要自行設計 class 的場合。因此讀者不必去了解 Cart 類別的寫法涵意，範例另外用到的觀念都會隨時做說明。而 PHP 5 加入的新物件功能會在後面章節再做介紹。
+
+## $this - 我所在的類別
+
+member function 可以透過 $this 變數來參考自己類別裡的 data member 或 member function，例如我們在 Cart 類別裡宣告 $item 的變數，member function 就可這麼使用：
+
+~~~~~~~~
+$this->items;
+~~~~~~~~
+
+表示參考自己所在類別裡的 $items 變數。要注意的是，底下的寫法是錯誤的，而且初學者也很容易混淆：
+
+~~~~~~~~
+$this->$items;
+~~~~~~~~
+
+要注意參考變數 (data member) 時，不需加上 $，我們可以將 this->items 整個看成是變數名稱，因此寫成 $this->items 才對。
+
+## derived class
+
+class 可以繼承自其它的 class 的所有內容，包括 data members 和 member functions，這樣的 class 稱為 derived class，例如：
+
+~~~~~~~~
+<?php
+class Shopping [[extends Cart]] {
+   var $customer, $telephone;
+
+   function person($name, $tel) {
+      $this->customer = $name;
+      $this->telephone = $tel
+   }
+}
+~~~~~~~~
+
+表示 shopping 這個類別是繼承自 Cart 類別，當然 shopping 類別也就擁有 Cart 的所有 member data 與 member function：
+
+~~~~~~~~
+$shopping = new $Shopping;
+
+$shopping->add_item("Linux Kernel Internals", "1");
+$shopping->person("Jollen", "123456789");
+~~~~~~~~
+
+範例中的 Shopping 類別直接繼承自 Cart 類別，這種直接繼承自一個 base class (Cart) 的動作稱為單一繼承，即 class 的 directly base class 只能有一個。
+
+## constructor - 建構子
+
+與 class 同名的 member function 即為 constructor (建構子)，constructor 在物件生成時自動執行，例如：
+
+~~~~~~~~
+<?php
+class Shopping extends Cart {
+   var $customer, $telephone;
+
+   function Shopping() {
+      $this->customer = "GUEST";
+      $this->telephone = "UNKNOW";
+   }
+
+   function person($name, $tel) {
+      $this->customer = $name;
+      $this->telephone = $tel
+   }
+}
+
+Shopping 類別的物件生成時，Shopping 建構子會自動被執行：
+
+$shopping = new $Shopping;
+?>
+~~~~~~~~
+
+此時 $shopping->customer 與 $shopping->telephone 分別為 "GUEST" 與 "UNKNOW"，除非利用 person() 重新給定 customer 與 telephone 的值，否則這兩個 member data 的值不會改變。
+
+這裡的 constructor 還有另外一種較具彈性的寫法：
+
+~~~~~~~~
+<?php
+class Shopping extends Cart {
+   var $customer, $telephone;
+
+   function Shopping($name = "GUEST", $tel = $"UNKNOWN") {
+      $this->customer = $name;
+      $this->telephone = $tel";
+   }
+}
+?>
+~~~~~~~~
+
+生成物件時，有 2 種不同的情況：
+
+1.
+
+~~~~~~~~
+$shopping = new Shopping;
+~~~~~~~~
+
+此時 $shopping->customer 與 $shopping->telephone 一樣為 "GUEST" 與 "UNKNOWN"。
+
+2.
+
+~~~~~~~~
+$shopping = new Shopping("Jollen", "123456789");
+~~~~~~~~
+
+指定參數給建構子，此時 $shopping->customer 與 $shopping->telephone 分別為 "Jollen" 與 "123456789"。
+
+從 PHP 4 延續下來的習慣：在 PHP 的 class 裡，只能對 var 變數做常數初始化的動作，因此底下的寫法是錯誤的：
+
+~~~~~~~~
+class Cart
+{
+   var $shop = "Aloud Company";
+   var $items = array("Mouse", "Keyboard");
+}
+~~~~~~~~
+
+對變數給定非常數 (non-constant) 值時，必須將給值的動作寫在 constructor 函數裡才可以。因此上面的範例應該改寫成底下的寫法：
+
+~~~~~~~~
+<?php
+
+class Cart
+{
+   var $shop;
+   var $items;
+
+   function Cart()
+   {
+      $this->shop = "Aloud Company";
+      $this->items = array("Mouse", "Keyboard");
+   }
+}
+
+?>
+~~~~~~~~
+
+在 PHP 4 裡，constructor 還有一個重要的特性。當 class 裡沒有 constructor 時，則 base class 的 constructor 會被呼叫。請看底下的範例：
+
+~~~~~~~~
+<?php
+
+class base_cart
+{
+   function base_cart()
+   {
+      echo "Shopping cart is based on PHP.";
+   }
+}
+
+class Cart extends base_cart
+{
+   var $shop;
+   var $items;
+
+   function init()
+   {
+      $this->shop = "Aloud Company";
+      $this->items = array("Mouse", "Keyboard");
+   }
+}
+
+$cart = new Cart;
+
+?>
+~~~~~~~~
+
+輸出結果：
+
+~~~~~~~~
+Shopping cart is based on PHP.
+~~~~~~~~
+
+由於 Cart 類別本身沒有 constructor，因此當 $cart 生成時，就會呼叫 base class 即 base_cart 類別的 constructor。假如 base class 也沒有 constructor，則當 $cart 生成時，就不會有任何 constructor 被呼叫。
+
+## `::` 運算子
+
+熟悉 C++ 朋友對於 :: 運算子一定不莫生，當物件還未生成時，我們可以使用 `::` 運算子來呼叫類別裡的函數。
+
+請看底下的範例：
+
+~~~~~~~~
+<?php
+
+class base_cart
+{
+   function base_cart()
+   {
+      echo "Shopping cart is based on PHP 4.";
+   }
+}
+
+class Cart extends base_cart
+{
+   var $shop;
+   var $items;
+
+   function init()
+   {
+      $this->shop = "Aloud Company";
+      $this->items = array("Mouse", "Keyboard");
+   }
+}
+
+Cart::base_cart();
+
+?>
+~~~~~~~~
+
+與比較先前的範例做比較，直較的差別在於這個範例並沒有生成 Cart 類別的物件，而是直接以 :: 運算子呼叫 Cart 類別裡的 base_cart() 函數。要注意這種用法只在 PHP 4 版本裡才能使用。
