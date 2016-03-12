@@ -16,6 +16,8 @@ $ npm i nodejs-cccount
 
 # Synopsis
 
+Example:
+
 ```
 var ccc = require('nodejs-cccount');
 
@@ -25,7 +27,7 @@ ccc.wchars("您好Hello", function (res) {
 });
 ```
 
-Response
+Output:
 
 ```
 { lengthChinese: 2 }
@@ -44,7 +46,7 @@ ccc.wchars(data, [options,] callback)
 
 The callback function will be called when the data has finished calculated. The callback function will get a response object,
 
-* **lengthChinese***: the Chinese characters
+* **lengthChinese**: the Chinese characters
 
 Normally, you should run in **normal mode** for performance reason. If your article has some particular Chinese symbols, you can run in **strict mode**.
 
