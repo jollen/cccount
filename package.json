@@ -1,18 +1,18 @@
 {
   "name": "cccount",
-  "description": "Simple Chinese characters counter",
-  "author": {
-    "name": "Jollen Chen",
-    "email": "jollen@jollen.org"
-  },
+  "version": "0.2.0",
+  "description": "Ultra fast Chinese character counter",
+  "main": "index.js",
+  "author": "jollen <jollen@jollen.org>",
+  "license": "MIT",
   "url": "https://github.com/jollen/nodejs-cccount",
   "keywords": [
   ],
-  "main": "./index.js",
-  "version": "0.2.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/jollen/nodejs-cccount.git"
   },
-  "readmeFilename": "README.md"
+  "scripts": {
+    "test": "make test"
+  },
 }
