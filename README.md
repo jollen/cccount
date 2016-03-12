@@ -1,23 +1,23 @@
 Ultra fast Chinese character counter
 
-cccount
+nodejs-cccount
 =======
 
 [![Build Status](https://travis-ci.org/jollen/nodejs-cccount.svg?branch=master)](https://travis-ci.org/jollen/nodejs-cccount)
 [![npm version](https://img.shields.io/npm/v/nodejs-cccount.svg?style=flat)](https://www.npmjs.com/package/nodejs-cccount)
 
-**cccount** is a Node.js module for calculating Chinese characters.
+**nodejs-cccount** is a Node.js module for calculating Chinese characters.
 
 # Install
 
 ```
-$ npm i cccount
+$ npm i nodejs-cccount
 ```
 
 # Synopsis
 
 ```
-var ccc = require('cccount');
+var ccc = require('nodejs-cccount');
 
 // should be 2 chars
 ccc.wchars("您好Hello", function (res) {
