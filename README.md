@@ -28,15 +28,23 @@ ccc.wchars("您好Hello", function (res) {
 # API
 
 ```
-cccount.wchars(data, [options], callback)
+ccc.wchars(data, [options,] callback)
 ```
 
-* **data**: is the article to be caculated.
+* **data**: the article to be caculated.
 * **options**
- * **strict**: '''false''' - normal mode, '''true''' - strict mode
-* **callback**: is complete callback function
+ * **strict**: ```false``` - normal mode, ```true``` - strict mode
+* **callback**: the complete callback function
 
 The callback function will be called when the data has finished calculated. The callback function will get a response object.
+
+Normally, you should run in **normal mode** for performance reason. If your article has some particular Chinese symbols, you can run in **strict mode**.
+
+## Use Cases of nodejs-cccount
+
+* Publishing platform for caculating and display Chinese words
+* Database schema design for storing Chinese words in the JSON document
+* You want to caculate Chinese words for more exact
 
 # License
 
