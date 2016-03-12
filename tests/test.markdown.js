@@ -19,7 +19,7 @@ fs.readFile('./tests/sample.md', 'utf8', function (err, data) {
 	});
 
 	// Strict mode.
-	ccc.wchars(data, {strict: 1}, function (res) {
+	ccc.wchars(data, {strict: true}, function (res) {
 		console.log(res);
 	});
 });

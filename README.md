@@ -28,13 +28,13 @@ ccc.wchars("您好Hello", function (res) {
 # API
 
 ```
-cccount.wchars(data, options, callback)
+cccount.wchars(data, [options], callback)
 ```
 
-* **data** is the article to be caculated.
+* **data**: is the article to be caculated.
 * **options**
- * **strict** 0 - normal mode, 1 - strict mode
-* **callback** is complete callback function
+ * **strict**: '''false''' - normal mode, '''true''' - strict mode
+* **callback**: is complete callback function
 
 The callback function will be called when the data has finished calculated. The callback function will get a response object.
 
