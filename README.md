@@ -1,3 +1,5 @@
+Ultra fast Chinese character counter
+
 cccount
 =======
 
