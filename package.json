@@ -1,5 +1,5 @@
 {
-  "name": "cccount",
+  "name": "nodejs-cccount",
   "version": "0.2.0",
   "description": "Ultra fast Chinese character counter",
   "main": "index.js",
