@@ -1,6 +1,6 @@
 {
-  "name": "nodejs-cccount",
-  "version": "0.2.4",
+  "name": "cccount",
+  "version": "0.3.0",
   "description": "Ultra fast Chinese character counter",
   "main": "index.js",
   "author": "jollen <jollen@jollen.org>",
