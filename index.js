@@ -22,11 +22,11 @@ exports.wchars = function(src, options, cb) {
 	
 	// This is the often used symbols.
 	// The order of this table is optimized for performance purpose.
-	var chineseSymbolTable = '，。；﹑：「」（）？﹐﹖！﹙﹚《》【】╴—〔〕『』｛｝﹛﹜”〝〞〈〉﹔︰﹕﹗‵′、“…';
+	var chineseSymbolTable = '，。；﹑：「」（）【】？！﹙﹚《》╴—〔〕『』｛｝﹛﹜”〝〞〈〉﹔︰﹕﹗‵′、“…';
 
 	// Rarely used symbols will only be caculated when running in strict mode.
 	if (options.strict === true) {
-		chineseSymbolTable += '｜︳︱︿︴﹀．﹏‧﹃︷﹄‥︸·﹒︹︺﹝﹞‘’︻︼︽︾﹁︵﹂︶';
+		chineseSymbolTable += '﹖﹐｜︳︱︿︴﹀．﹏‧﹃︷﹄‥︸·﹒︹︺﹝﹞‘’︻︼︽︾﹁︵﹂︶';
 	}
 
 	// 1. Strip all spaces.
