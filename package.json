@@ -5,12 +5,12 @@
   "main": "index.js",
   "author": "jollen <jollen@jollen.org>",
   "license": "MIT",
-  "url": "https://github.com/jollen/nodejs-cccount",
+  "url": "https://github.com/jollen/cccount",
   "keywords": [
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/jollen/nodejs-cccount.git"
+    "url": "git://github.com/jollen/cccount.git"
   },
   "scripts": {
     "test": "make test"
